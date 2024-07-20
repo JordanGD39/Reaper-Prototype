@@ -21,6 +21,8 @@ namespace Framework.TrainMovement
             {
                 if (value == false)
                     gameObject.SetActive(false);
+
+                Start();
             }
         }
         
@@ -41,8 +43,8 @@ namespace Framework.TrainMovement
         {
             _isFollowTargetNull = FollowTarget == null;
 
-            if (_isFollowTargetNull)
-                throw new Exception(NO_TARGET);
+            // if (_isFollowTargetNull)
+            //     throw new Exception(NO_TARGET);
         }
 
         private void FixedUpdate()
