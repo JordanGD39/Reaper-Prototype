@@ -1,6 +1,7 @@
 using UnityEngine;
 
 using Framework.TrainMovement;
+using NPC;
 
 namespace Framework.Pickups
 {
@@ -9,6 +10,7 @@ namespace Framework.Pickups
     {
         private Train _parent;
         private TrainSegment _thisSegment;
+        private SoulVessel _soulVessel;
 
         private void Awake() => _thisSegment = GetComponent<TrainSegment>();
 
@@ -16,11 +18,12 @@ namespace Framework.Pickups
         {
             _parent = p_lastPickUpper.GetComponent<Train>();
             _parent.AddSegment(_thisSegment);
+            SpawnPoints.Instance.Release(_soulVessel);
         }
 
-        public override void Deliver()
+        public void SetVessel(SoulVessel targetVessel)
         {
-            _parent.RemoveSegment(_thisSegment);
+            _soulVessel = targetVessel;
         }
     }
 }

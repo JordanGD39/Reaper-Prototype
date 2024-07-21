@@ -6,11 +6,12 @@ using Framework.TrainMovement;
 
 namespace NPC
 {
-    public sealed class AcceptSoul : MonoBehaviour
+    public sealed class SoulVessel : MonoBehaviour
     {
         [SerializeField, Tag] private string playerTag;
         [SerializeField] private GameObject soulToSpawn;
         [SerializeField] private SoulPair npcSoul;
+        [SerializeField] private bool debugMode;
 
         private bool _hasSoul;
         
@@ -30,14 +31,16 @@ namespace NPC
         
         private void SpawnSoul()
         {
-            // todo: better location
-            Vector3 p = Vector3.one * 10 + transform.position;
-            p.y = 0;
-            GameObject s = Instantiate(soulToSpawn, p, Quaternion.identity);
-            SetRandomColor(s);
+            Vector3 p = SpawnPoints.Instance.GetSpawnPoint(this);
+            GameObject spawnedSoul = Instantiate(soulToSpawn, p, Quaternion.identity);
             
-            npcSoul.soul = s.GetComponent<Soul>();
-            npcSoul.trainSegment = s.GetComponent<TrainSegment>();
+            npcSoul.trainSegment = spawnedSoul.GetComponent<TrainSegment>();
+            npcSoul.soul = spawnedSoul.GetComponent<Soul>();
+            npcSoul.soul.SetVessel(this);
+            _hasSoul = false;
+            
+            if (debugMode)
+                SetRandomColor(spawnedSoul);
         }
         
         // test function for visuals
@@ -45,8 +48,8 @@ namespace NPC
         {
             Color randomColor = new (Random.value, Random.value, Random.value);
             
-            Renderer renderer = GetComponent<Renderer>();
-            renderer.material.color = randomColor;
+            Renderer renderer1 = GetComponent<Renderer>();
+            renderer1.material.color = randomColor;
             
             Renderer renderer2 = soul.GetComponent<Renderer>();
             renderer2.material.color = randomColor;

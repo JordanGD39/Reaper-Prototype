@@ -8,35 +8,22 @@ namespace Framework.Pickups
     public abstract class BasePickup : MonoBehaviour
     {
         [SerializeField, Tag] private string targetPickUpper;
-        [SerializeField, Tag] private string deliveryPoint;
 
         protected GameObject p_lastPickUpper;
 
         public bool IsPickedUpped { get; private set; }
 
         public abstract void Pickup();
-        
-        public abstract void Deliver();
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!IsPickedUpped
-                && other.CompareTag(targetPickUpper))
-            {
-                p_lastPickUpper = other.gameObject;
-                Pickup();
-                IsPickedUpped = true;
-                return;
-            }
-
-            return;
-            
             if (IsPickedUpped
-                && other.CompareTag(deliveryPoint))
-            {
-                IsPickedUpped = false;
-                Deliver();
-            }
+                || !other.CompareTag(targetPickUpper))
+                return;
+            
+            p_lastPickUpper = other.gameObject;
+            Pickup();
+            IsPickedUpped = true;
         }
     }
 }
