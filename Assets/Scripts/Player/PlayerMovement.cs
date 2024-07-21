@@ -9,13 +9,15 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rb;
 
     [Header("Movement")]
+    [SerializeField] public float targetSpeed = 30;
+    public float currentTargetSpeed = 30;
     [SerializeField] private float _maxForce = 1;
-    [field: SerializeField] public float TargetSpeed { get; private set; }
     [SerializeField] private float _gravity = 9.8f;
     [SerializeField] private float _gravityWhenGrounded = 2;
     [SerializeField] private float _groundDrag = 1;
     [SerializeField] private float _speedPreservationAngle = 50;
     [SerializeField] private float _atFullSpeedDiff = 2;
+    [SerializeField] private float _speedFalloff = 2;
 
     [Header("Ground check")]
     [SerializeField] private Transform _groundCheckPoint;
@@ -49,11 +51,13 @@ public class PlayerMovement : MonoBehaviour
     {
         _cam = Camera.main;
         _rb.useGravity = false;
+        currentTargetSpeed = targetSpeed;
     }
 
     private void Update()
     {
         GroundCheck();
+        UpdateCurrentTargetSpeed();
 
         if (_rb.velocity.y < 0)
             _jumping = false;
@@ -129,13 +133,14 @@ public class PlayerMovement : MonoBehaviour
         currentVel.y = 0;
         projectedDir.Normalize();
 
-        Vector3 targetVel = projectedDir * TargetSpeed;
+        Vector3 targetVel = projectedDir * currentTargetSpeed;
 
         Vector3 velChange = targetVel - currentVel;
         
-        if (_movementInput == Vector2.zero || 
-            currentVel.magnitude < TargetSpeed - _atFullSpeedDiff || 
-            Vector3.Angle(currentVel.normalized, projectedDir) > _speedPreservationAngle)
+        if (_movementInput == Vector2.zero 
+            || currentVel.magnitude < currentTargetSpeed - _atFullSpeedDiff
+            || currentVel.magnitude > currentTargetSpeed
+            || Vector3.Angle(currentVel.normalized, projectedDir) > _speedPreservationAngle)
         {
             velChange = Vector3.ClampMagnitude(velChange, _maxForce);
         }
@@ -145,6 +150,28 @@ public class PlayerMovement : MonoBehaviour
         }
 
         _rb.AddForce(velChange, ForceMode.VelocityChange);
+    }
+
+    private void UpdateCurrentTargetSpeed()
+    {
+        Vector3 currentVel = _rb.velocity;
+        currentVel.y = 0;
+
+        if (currentVel.magnitude > currentTargetSpeed)
+        {
+            currentTargetSpeed = currentVel.magnitude;
+            return;
+        }
+        else if(currentVel.magnitude < targetSpeed && currentTargetSpeed != targetSpeed)
+            currentTargetSpeed = targetSpeed;
+            
+        if (currentTargetSpeed == targetSpeed)
+            return;
+
+        currentTargetSpeed -= _speedFalloff * Time.deltaTime;
+
+        if (currentTargetSpeed < targetSpeed)
+            currentTargetSpeed = targetSpeed;
     }
 
     private void OnDrawGizmosSelected()

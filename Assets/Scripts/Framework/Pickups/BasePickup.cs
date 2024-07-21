@@ -17,11 +17,12 @@ namespace Framework.Pickups
 
         private void OnTriggerEnter(Collider other)
         {
-            if (IsPickedUpped
-                || !other.CompareTag(targetPickUpper))
+            if (other.attachedRigidbody == null 
+                || IsPickedUpped
+                || !other.attachedRigidbody.CompareTag(targetPickUpper))
                 return;
             
-            p_lastPickUpper = other.gameObject;
+            p_lastPickUpper = other.attachedRigidbody.gameObject;
             Pickup();
             IsPickedUpped = true;
         }
