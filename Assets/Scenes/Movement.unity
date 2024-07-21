@@ -1183,18 +1183,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24a771c04330d554fbe72dc092ad8fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 30
   _maxForce: 1
-  _gravity: 19.6
+  <TargetSpeed>k__BackingField: 30
+  _gravity: 39.2
   _gravityWhenGrounded: 80
   _groundDrag: 1
+  _speedPreservationAngle: 50
+  _atFullSpeedDiff: 2
   _groundCheckPoint: {fileID: 805506889}
   _groundCheckRadius: 0.55
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
   _hitAngle: 60
-  _jumpForce: 8
+  _jumpForce: 16
 --- !u!114 &1671530382
 MonoBehaviour:
   m_ObjectHideFlags: 0
