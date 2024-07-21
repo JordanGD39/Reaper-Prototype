@@ -132,8 +132,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 targetVel = projectedDir * TargetSpeed;
 
         Vector3 velChange = targetVel - currentVel;
-
-        Debug.Log(Vector3.Angle(currentVel.normalized, projectedDir));
+        
         if (_movementInput == Vector2.zero || 
             currentVel.magnitude < TargetSpeed - _atFullSpeedDiff || 
             Vector3.Angle(currentVel.normalized, projectedDir) > _speedPreservationAngle)
