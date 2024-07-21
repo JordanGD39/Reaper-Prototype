@@ -74,14 +74,14 @@ namespace Framework.TrainMovement
             onAddSegment?.Invoke();
         }
 
-        public void RemoveSegment(TrainSegment segmentToRemove)
+        public bool RemoveSegment(TrainSegment segmentToRemove)
         {
             int index = Array.IndexOf(segments, segmentToRemove);
 
             if (index == -1)
             {
                 Debug.LogWarning(PART_NOT_FOUND_ERROR);
-                return;
+                return false;
             }
 
             for (int i = index; i < segments.Length - 1; i++)
@@ -95,6 +95,7 @@ namespace Framework.TrainMovement
             Array.Resize(ref segments, segments.Length - 1);
             segmentToRemove.CanFollow = false;
             onRemoveSegment?.Invoke();
+            return true;
         }
     }
 }
