@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Framework.Attributes;
 
 public class DashRing : MonoBehaviour
 {
     [SerializeField, Tag] private string _target;
     [SerializeField] private float _targetVelocity = 50;
+    [SerializeField] private UnityEvent OnDash;
 
     // Start is called before the first frame update
     void Start()
@@ -30,5 +32,7 @@ public class DashRing : MonoBehaviour
             return;
 
         rb.AddForce(currentVel.normalized * force, ForceMode.Impulse);
+
+        OnDash?.Invoke();
     }
 }
