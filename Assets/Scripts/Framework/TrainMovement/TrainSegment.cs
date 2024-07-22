@@ -47,7 +47,7 @@ namespace Framework.TrainMovement
             //     throw new Exception(NO_TARGET);
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (!CanFollow
                 || _isFollowTargetNull)
