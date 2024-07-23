@@ -7,12 +7,12 @@ namespace Framework
     {
         [SerializeField] private bool canCountOnAwake;
         [SerializeField] private bool canCount;
-        [SerializeField] private float startingTime;
+        [SerializeField, Tooltip("Time in seconds.")] private float startingTime;
 
         private float _currentTimer;
         private float _totalTimer;
         private bool _isStarting;
-        private bool _isTimerLenghtSmall;
+        private bool _isTimerLengthSmall;
 
         public bool IsCounting { get; private set; }
 
@@ -25,7 +25,13 @@ namespace Framework
 
         #endregion
 
-        private void Awake() => SetCanCount(canCountOnAwake);
+        private void Awake()
+        {
+            SetCanCount(canCountOnAwake);
+            
+            if (canCountOnAwake)
+                StartCounting();
+        }
 
         private void Update() => Counting();
 
@@ -60,7 +66,7 @@ namespace Framework
             canCount = true;
             _isStarting = true;
             _totalTimer = startingTime;
-            _currentTimer = _totalTimer;
+            _currentTimer = startingTime;
         }
 
         /// <summary>
@@ -76,19 +82,19 @@ namespace Framework
         /// Set the timer lenght, when resetting it will use this number.
         /// </summary>
         /// <param name="target">The target amount for the timer</param>
-        public void SetCurrentTimerLenght(float target) => _currentTimer = target;
+        public void SetCurrentTimerLength(float target) => _currentTimer = target;
         
         /// <summary>
         /// Set the timer lenght, when resetting it will use this number.
         /// </summary>
         /// <param name="target">The target amount for the timer</param>
-        public void SetTimerLenght(float target) => startingTime = target;
+        public void SetTimerLength(float target) => startingTime = target;
 
         /// <summary>
         /// Get the timer it's current lenght.
         /// </summary>
         /// <returns>The current timer lenght</returns>
-        public float GetCurrentTimerLenght() => _currentTimer;
+        public float GetCurrentTimerLength() => _currentTimer;
 
         /// <summary>
         /// Calculates the percentage of the current timer relative to the progress.
@@ -112,7 +118,7 @@ namespace Framework
                 onStart?.Invoke();
             }
 
-            _currentTimer += Time.deltaTime;
+            _currentTimer -= Time.deltaTime;
             IsCounting = true;
 
             if (_currentTimer > 0)

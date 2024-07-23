@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+using Framework.Pickups;
+
 namespace Framework.TrainMovement
 {
     /// <summary>
@@ -96,6 +98,15 @@ namespace Framework.TrainMovement
             segmentToRemove.CanFollow = false;
             onRemoveSegment?.Invoke();
             return true;
+        }
+
+        public Soul GetFirstSoul()
+        {
+            if (segments.Length == 0)
+                return null;
+            
+            bool a = segments[0].gameObject.TryGetComponent(out Soul s);
+            return a ? s : null;
         }
     }
 }
