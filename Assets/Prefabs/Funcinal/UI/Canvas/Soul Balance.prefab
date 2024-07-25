@@ -160,6 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1316527945905865687}
   - component: {fileID: 6497979245173449398}
+  - component: {fileID: 177504558787789240}
   m_Layer: 5
   m_Name: Soul Balance
   m_TagString: Untagged
@@ -176,7 +177,7 @@ RectTransform:
   m_GameObject: {fileID: 6332237986489253276}
   m_LocalRotation: {x: 0, y: 0, z: -0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6346956502209829865}
@@ -200,5 +201,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883273754bcf481d8b0dbe0a2dd49da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSoul: {fileID: 0}
   pointer: {fileID: 779193311573391219}
+  currentSoul: {fileID: 0}
+  train: {fileID: 0}
+--- !u!114 &177504558787789240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6332237986489253276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2490bfa886d444ba12e570765756f59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 0}

@@ -12,11 +12,14 @@ namespace Framework.Pickups
     public sealed class Soul : BasePickup
     {
         [SerializeField, Range(0,1)] private float addAmount = 0.1f;
+        [SerializeField, Range(0, 1)] private float inBalanceThreshold = 0.3f;
         [Tooltip("(0,0) Air\n(0,1) Fire\n(1,0) Water\n(1,1) Earth")]
-        [field: SerializeField, RangeVector2(0, 1, 0, 1)] private Vector2 balance;
+        [SerializeField, RangeVector2(0, 1, 0, 1)] private Vector2 balance;
         public Vector2 Balance => balance;
         
         [SerializeField] private UnityEvent onFade = new();
+        [SerializeField] private UnityEvent onDeliver = new();
+        [SerializeField] private UnityEvent onDeliverUnbalanced = new();
         
         private Train _parent;
         private TrainSegment _thisSegment;
@@ -41,7 +44,13 @@ namespace Framework.Pickups
             onFade?.Invoke();
         }
 
-        public void AddElement(int e) => AddElement((Elements)e);
+        public void DeliverSoul()
+        {
+            UnityEvent u = IsInBalance() ? onDeliver : onDeliverUnbalanced;
+            u?.Invoke();
+        }
+
+        public void AddElement(int e) => AddElement((Elements) e);
         
         public void AddElement(Elements elementToAdd)
         {
@@ -56,6 +65,13 @@ namespace Framework.Pickups
             };
 
             balance = Vector2.MoveTowards(balance, target, addAmount);
+        }
+
+        private bool IsInBalance()
+        {
+            float u = 1 - inBalanceThreshold;
+            return balance.x > inBalanceThreshold && balance.x < u
+                   && balance.y > inBalanceThreshold && balance.y < u;
         }
     }
 }

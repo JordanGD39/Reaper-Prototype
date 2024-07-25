@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Framework.TrainMovement
 {
@@ -42,9 +41,6 @@ namespace Framework.TrainMovement
         private void Start()
         {
             _isFollowTargetNull = FollowTarget == null;
-
-            // if (_isFollowTargetNull)
-            //     throw new Exception(NO_TARGET);
         }
 
         private void Update()
